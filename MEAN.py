@@ -26,8 +26,6 @@ class MEAN():
         else:
             self.priors.append(counts / y.shape)
 
-        print(self.priors[-1][0])
-        print(np.array(self.priors).shape)
         if hasattr(self, 'chunk_estim_prior'):
             self.errs.append(self.priors[-1][0] - self.chunk_estim_prior)
                 

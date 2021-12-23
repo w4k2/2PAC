@@ -10,7 +10,7 @@ correction - czy uzywac predykcji klayfikatora bazowego jako bazy
 """
 
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, prior_estimator, criterion='min', correction = False):
+    def __init__(self, base_clf, prior_estimator, criterion='min', correction = True):
         self.base_clf = base_clf
         self.prior_estimator = prior_estimator
         self.criterion=criterion
@@ -31,18 +31,46 @@ class Meta(BaseEstimator, ClassifierMixin):
             pred = np.ones((X.shape[0]))
 
         estim_prior = self.prior_estimator.estimate(X)
-        negative_class_samples = int(np.rint(estim_prior*X.shape[0]))
-        
         pred_proba = self.clf.predict_proba(X)
 
-        max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
-        min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
+        if estim_prior > 0.1 and estim_prior < 0.9:
+            return self.clf.predict(X)
+       
+        if estim_prior > 0.5: #wiekszosc to 0 
+            if self.correction:
+                pred = self.clf.predict(X)
+            else:
+                pred = np.zeros((X.shape[0]))
+            
+            positive_class_samples = int(np.rint((1-estim_prior)*X.shape[0]))
 
-        if self.criterion == 'min':
-            pred[min_supp_1] = 0
-        elif self.criterion == 'max':
-            pred[max_supp_0] = 0
-        else:
-            exit()
+            max_supp_0 = np.argsort(pred_proba[:,0])[-positive_class_samples:]
+            min_supp_1 = np.argsort(pred_proba[:,1])[:positive_class_samples]
+
+            if self.criterion == 'min':
+                pred[min_supp_1] = 1
+            elif self.criterion == 'max':
+                pred[max_supp_0] = 1
+            else:
+                exit()
+            
+
+        else: #wiekszosc to 1
+            if self.correction:
+                pred = self.clf.predict(X)
+            else:
+                pred = np.ones((X.shape[0]))
+            
+            negative_class_samples = int(np.rint(estim_prior*X.shape[0]))
+
+            max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
+            min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
+
+            if self.criterion == 'min':
+                pred[min_supp_1] = 0
+            elif self.criterion == 'max':
+                pred[max_supp_0] = 0
+            else:
+                exit()
 
         return pred
