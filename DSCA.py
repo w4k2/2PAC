@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.base import ClassifierMixin, BaseEstimator
 from sklearn.neural_network import MLPRegressor
 from sklearn.base import clone
 
@@ -14,7 +13,7 @@ base_reg - regressor for dsca
 self.calculated_priors_list - contains results or prior proba estimation
 """
 
-class DSCA(BaseEstimator, ClassifierMixin):
+class DSCA():
     def __init__(self, 
                 window=1,
                 max_iter=250,
@@ -39,11 +38,18 @@ class DSCA(BaseEstimator, ClassifierMixin):
     def feed(self, X, y, classes):
         self.X = np.copy(X)
         self.y = np.copy(y)
-        self.classes_ = np.copy(classes)
+        self.classes = np.copy(classes)
 
         # Gather priors
-        _ = np.unique(y, return_counts=True)
-        self.priors.append(_[1][self.classes_[_[0]]] / y.shape)
+        unique, counts  = np.unique(y, return_counts=True)
+        if len(unique) == 1:
+            if unique[0] == 0:
+                self.priors.append([1., 0.])
+            else:
+                self.priors.append([0., 1.])
+        else:
+            self.priors.append(counts / y.shape)
+        
         apriors = np.array(self.priors)
 
         # Dynamic statistical concept analysis
@@ -63,7 +69,6 @@ class DSCA(BaseEstimator, ClassifierMixin):
         for i in range(n_iter):
             self.dsca_reg_0.partial_fit(self.dsca_X[-window:], np.array(apriors[-window:,0]))
             self.dsca_reg_1.partial_fit(self.dsca_X[-window:], np.array(apriors[-window:,1]))
-
 
         
     def estimate(self, X):

@@ -1,11 +1,20 @@
 from sklearn.base import BaseEstimator, ClassifierMixin, clone
 import numpy as np
 
+"""
+criterion:
+'min' - minimalne wsparcie dla lasy wiekszosciowej
+'max' - maksymalne wparcie dla klasy mniejszosciowej
+
+correction - czy uzywac predykcji klayfikatora bazowego jako bazy
+"""
+
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, prior_estimator, criterion='min'):
+    def __init__(self, base_clf, prior_estimator, criterion='min', correction = False):
         self.base_clf = base_clf
         self.prior_estimator = prior_estimator
         self.criterion=criterion
+        self.correction = correction
 
         self.clf = clone(base_clf)
 
@@ -15,7 +24,11 @@ class Meta(BaseEstimator, ClassifierMixin):
         return self
 
     def predict(self, X):
-        pred = np.ones((X.shape[0]))
+
+        if self.correction:
+            pred = self.clf.predict(X)
+        else:
+            pred = np.ones((X.shape[0]))
 
         estim_prior = self.prior_estimator.estimate(X)
         negative_class_samples = int(np.rint(estim_prior*X.shape[0]))
@@ -27,7 +40,9 @@ class Meta(BaseEstimator, ClassifierMixin):
 
         if self.criterion == 'min':
             pred[min_supp_1] = 0
-        else:
+        elif self.criterion == 'max':
             pred[max_supp_0] = 0
+        else:
+            exit()
 
         return pred
