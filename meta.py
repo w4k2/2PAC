@@ -1,5 +1,6 @@
 from sklearn.base import BaseEstimator, ClassifierMixin, clone
 import numpy as np
+from imblearn.over_sampling import SMOTE 
 
 """
 criterion:
@@ -10,33 +11,40 @@ correction - czy uzywac predykcji klayfikatora bazowego jako bazy
 """
 
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, prior_estimator, criterion='min', correction = True):
+    def __init__(self, base_clf, prior_estimator, criterion='min', correction = True, resample=True):
         self.base_clf = base_clf
         self.prior_estimator = prior_estimator
         self.criterion=criterion
         self.correction = correction
+        self.resample=resample
 
         self.clf = clone(base_clf)
+        self.smote = SMOTE()
 
     def partial_fit(self, X, y, classes):
-        self.clf.partial_fit(X, y, classes)
+
+        #SMOTE
+        if self.resample:
+            try:
+                X_res, y_res = self.smote.fit_resample(X, y)
+                self.clf.partial_fit(X_res, y_res, classes)
+            except:
+                self.clf.partial_fit(X, y, classes)
+        else:
+            self.clf.partial_fit(X, y, classes)
+
         self.prior_estimator.feed(X, y, classes)
         return self
 
     def predict(self, X):
-
-        if self.correction:
-            pred = self.clf.predict(X)
-        else:
-            pred = np.ones((X.shape[0]))
-
+        
         estim_prior = self.prior_estimator.estimate(X)
         pred_proba = self.clf.predict_proba(X)
 
         # zastanowic sie
         # if estim_prior > 0.1 and estim_prior < 0.9:
         #     return self.clf.predict(X)
-       
+    
         if estim_prior > 0.5: #wiekszosc to 0 
 
             if self.correction:
@@ -56,7 +64,6 @@ class Meta(BaseEstimator, ClassifierMixin):
             else:
                 exit()
             
-
         else: #wiekszosc to 1
             if self.correction:
                 pred = self.clf.predict(X)

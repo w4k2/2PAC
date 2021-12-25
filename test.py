@@ -13,7 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 
 weights = (.05, .1)
-# weights = (5, 1, 1.)
+# weights = (5, 7, 1.)
 # weights = [0.02, 0.98]
 
 y_flip = (.01, .01)
