@@ -12,8 +12,8 @@ from sklearn.base import clone
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 
-# weights = (.1, .1)
-# weights = (3, 5, 1.)
+# weights = (.05, .1)
+# weights = (5, 1, 1.)
 weights = [0.02, 0.98]
 
 y_flip = (.01, .01)
@@ -38,8 +38,8 @@ stream = sl.streams.StreamGenerator(
 # base = MLPClassifier()
 base = GaussianNB()
 
-# meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True)
-meta = Meta(base_clf=clone(base), prior_estimator=MEAN(), correction=True)
+meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True, criterion='max')
+# meta = Meta(base_clf=clone(base), prior_estimator=MEAN(), correction=True, criterion='min')
 gnb = clone(base)
 
 eval = sl.evaluators.TestThenTrain(verbose=True, metrics=(accuracy_score, balanced_accuracy_score))
