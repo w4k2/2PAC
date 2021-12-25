@@ -33,10 +33,12 @@ class Meta(BaseEstimator, ClassifierMixin):
         estim_prior = self.prior_estimator.estimate(X)
         pred_proba = self.clf.predict_proba(X)
 
-        if estim_prior > 0.1 and estim_prior < 0.9:
-            return self.clf.predict(X)
+        # zastanowic sie
+        # if estim_prior > 0.1 and estim_prior < 0.9:
+        #     return self.clf.predict(X)
        
         if estim_prior > 0.5: #wiekszosc to 0 
+
             if self.correction:
                 pred = self.clf.predict(X)
             else:
@@ -44,13 +46,13 @@ class Meta(BaseEstimator, ClassifierMixin):
             
             positive_class_samples = int(np.rint((1-estim_prior)*X.shape[0]))
 
-            max_supp_0 = np.argsort(pred_proba[:,0])[-positive_class_samples:]
-            min_supp_1 = np.argsort(pred_proba[:,1])[:positive_class_samples]
+            max_supp_1 = np.argsort(pred_proba[:,1])[-positive_class_samples:]
+            min_supp_0 = np.argsort(pred_proba[:,0])[:positive_class_samples]
 
             if self.criterion == 'min':
-                pred[min_supp_1] = 1
+                pred[min_supp_0] = 1
             elif self.criterion == 'max':
-                pred[max_supp_0] = 1
+                pred[max_supp_1] = 1
             else:
                 exit()
             
