@@ -7,19 +7,23 @@ criterion:
 'min' - minimalne wsparcie dla lasy wiekszosciowej
 'max' - maksymalne wparcie dla klasy mniejszosciowej
 
-correction - czy uzywac predykcji klayfikatora bazowego jako bazy
+correction - czy uzywac predykcji klasyfikatora bazowego jako bazy
+resample - smote podczas fit klasyfikatora
+border - od jakiego poziomu niezbalansowania korekcja predykcji (gdy estymacja a priori dla klasy 
+        mniejszosciowej jest mniejsza niz border, nastepuje korekcja)
 """
 
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, prior_estimator, criterion='min', correction = True, resample=True):
+    def __init__(self, base_clf, prior_estimator, criterion='min', correction=True, resample=False, border=0.1):
         self.base_clf = base_clf
         self.prior_estimator = prior_estimator
         self.criterion=criterion
         self.correction = correction
         self.resample=resample
+        self.border = border
 
         self.clf = clone(base_clf)
-        self.smote = SMOTE()
+        self.smote = SMOTE(random_state=123)
 
     def partial_fit(self, X, y, classes):
 
@@ -41,9 +45,9 @@ class Meta(BaseEstimator, ClassifierMixin):
         estim_prior = self.prior_estimator.estimate(X)
         pred_proba = self.clf.predict_proba(X)
 
-        # zastanowic sie
-        # if estim_prior > 0.1 and estim_prior < 0.9:
-        #     return self.clf.predict(X)
+        # poza border
+        if estim_prior > self.border and estim_prior < 1-self.border:
+            return self.clf.predict(X)
     
         if estim_prior > 0.5: #wiekszosc to 0 
 
