@@ -26,6 +26,8 @@ def str_weights():
     'ddis_5': {'weights':(.05, .05)},
     'ddis_2,5': {'weights':(.025, .05)}
     }
+def str_weights_names():
+    return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.05','DDIS .05/.05','DDIS .025/.05']
 
 def criteria():
     return ['min', 'max']
@@ -43,3 +45,6 @@ def base_clfs():
         MLPClassifier(),
         SGDClassifier(loss='modified_huber'),
     ]
+
+def base_clf_names():
+    return ['GNB', 'MLP', 'SGD']
