@@ -26,8 +26,32 @@ def str_weights():
     'ddis_5': {'weights':(.05, .05)},
     'ddis_2,5': {'weights':(.025, .05)}
     }
+
 def str_weights_names():
     return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.05','DDIS .05/.05','DDIS .025/.05']
+
+def str_weights_ddis():
+    return {   
+    'ddis_10_2,5': {'weights':(.1, .025)},
+    'ddis_5_2,5': {'weights':(.05, .025)},
+    'ddis_2,5_2,5': {'weights':(.025, .025)},
+    'ddis_1_2,5': {'weights':(.01, .025)},
+    'ddis_10_5': {'weights':(.1, .05)},
+    'ddis_5_5': {'weights':(.05, .05)},
+    'ddis_2,5_5': {'weights':(.025, .05)},
+    'ddis_1_5': {'weights':(.01, .05)},
+    'ddis_10_10': {'weights':(.1, .1)},
+    'ddis_5_10': {'weights':(.05, .1)},
+    'ddis_2,5_10': {'weights':(.025, .1)},
+    'ddis_1_10': {'weights':(.01, .1)}
+    }
+    
+def str_weights_names_ddis():
+    return [
+        'DDIS .1/.025','DDIS .05/.025','DDIS .025/.025', 'DDIS .01/.025',
+        'DDIS .1/.05','DDIS .05/.05','DDIS .025/.05', 'DDIS .01/.05',
+        'DDIS .1/.1','DDIS .05/.1','DDIS .025/.1', 'DDIS .01/.1']
+
 
 def criteria():
     return ['min', 'max']

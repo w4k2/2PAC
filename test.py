@@ -15,8 +15,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import SGDClassifier
 from RFR import RFR
 
-# weights = (.015, .05)
-weights = (4, 5, .75)
+weights = (.0025, .05)
+# weights = (4, 5, .75)
 # weights = [0.025, 0.975]
 # weights=[0.975, 0.025]
 y_flip = (.01, .01)
@@ -42,9 +42,9 @@ stream = sl.streams.StreamGenerator(
 # base = MLPClassifier()
 base = GaussianNB()
 
-# meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True, criterion='min', resample=False, border=0.1)
+meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True, criterion='min', resample=False, border=0.5)
 # meta = Meta(base_clf=clone(base), prior_estimator=MEAN(), correction=True, criterion='min')
-meta = Meta(base_clf=clone(base), prior_estimator=RFR(), correction=True, criterion='min', border=0.01)
+# meta = Meta(base_clf=clone(base), prior_estimator=RFR(), correction=True, criterion='min', border=0.01)
 gnb = clone(base)
 
 eval = sl.evaluators.TestThenTrain(verbose=True, metrics=(accuracy_score, balanced_accuracy_score))
