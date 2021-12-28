@@ -34,7 +34,7 @@ for bc_id, bc in enumerate(base_clfs):
     sig = 5
 
     plt.clf()
-    fig, axx = plt.subplots(4,3,figsize=(12,12),sharex=True)
+    fig, axx = plt.subplots(3,4,figsize=(17,10),sharex=True)
     fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     axx = axx.ravel()
