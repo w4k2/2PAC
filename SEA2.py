@@ -1,9 +1,9 @@
 import numpy as np
 from sklearn.base import clone
 from sklearn.metrics import accuracy_score
-import strlearn as sl
+from StreamingEnsemble2 import StreamingEnsemble
 
-class SEA(sl.ensembles.StreamingEnsemble):
+class SEA2(StreamingEnsemble):
     """
     Streaming Ensemble Algorithm.
 
@@ -44,6 +44,7 @@ class SEA(sl.ensembles.StreamingEnsemble):
         self.metric = metric
 
     def partial_fit(self, X, y, classes=None):
+        # print(np.unique(y))
         super().partial_fit(X, y, classes)
         if not self.green_light:
             return self

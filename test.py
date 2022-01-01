@@ -11,11 +11,11 @@ from scipy.signal import medfilt
 from sklearn.base import clone
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-# from SEA2 import SEA2
+from SEA2 import SEA2
 from sklearn.linear_model import SGDClassifier
 from RFR import RFR
 
-weights = (.0025, .05)
+weights = (.035, .05)
 # weights = (4, 5, .75)
 # weights = [0.025, 0.975]
 # weights=[0.975, 0.025]
@@ -37,10 +37,10 @@ stream = sl.streams.StreamGenerator(
     class_sep=1,
 )
 
-# base = SEA2(KNeighborsClassifier())
+base = SEA2(KNeighborsClassifier())
 # base = SGDClassifier(loss='modified_huber')
 # base = MLPClassifier()
-base = GaussianNB()
+# base = GaussianNB()
 
 meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True, criterion='min', resample=False, border=0.5)
 # meta = Meta(base_clf=clone(base), prior_estimator=MEAN(), correction=True, criterion='min')
@@ -57,7 +57,7 @@ kernel=11
 
 ax[0,0].plot(meta.prior_estimator.calculated_priors_list, label = 'estimation')
 ax[0,0].plot(meta.prior_estimator.errs, label = 'estim. error')
-ax[0,0].set_title('dsca')
+ax[0,0].set_title('with pp estim')
 ax[0,0].set_ylim(0,1)
 ax[0,0].legend()
 
@@ -69,7 +69,7 @@ ax[1,0].legend()
 
 
 ax[0,1].plot(np.array(meta.prior_estimator.priors)[:,0], label = 'prior')
-ax[0,1].set_title('gnb')
+ax[0,1].set_title('base')
 ax[0,1].set_ylim(0,1)
 ax[0,1].legend()
 
