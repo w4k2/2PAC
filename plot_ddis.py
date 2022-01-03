@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import config
 from scipy.ndimage import gaussian_filter1d
+from strlearn.utils import scores_to_cummean
 
 weights = config.str_weights_ddis()
 weigths_names = config.str_weights_names_ddis()
@@ -50,10 +51,17 @@ for bc_id, bc in enumerate(base_clfs):
         ax.set_ylabel('BAC')
         ax.set_xlabel('chunk')
 
-        ax.plot(gaussian_filter1d(raw_res[w_id], sig), label='base clf', color='orange')
+        a = scores_to_cummean(raw_res[w_id].reshape(1,chunks-1,1))
+        b = scores_to_cummean(mean_mean[w_id,bc_id].reshape(1,chunks-1,1))
+        c = scores_to_cummean(mean_dsca[w_id,bc_id].reshape(1, chunks-1, 1))
 
-        ax.plot(gaussian_filter1d(mean_mean[w_id,bc_id],sig), ls='--', label='MEAN', c='tomato')
-        ax.plot(gaussian_filter1d(mean_dsca[w_id,bc_id],sig), ls='--', label='DSCA', c='dodgerblue')
+        # ax.plot(gaussian_filter1d(raw_res[w_id], sig), label='base clf', color='orange')
+        # ax.plot(gaussian_filter1d(mean_mean[w_id,bc_id],sig), ls='--', label='MEAN', c='tomato')
+        # ax.plot(gaussian_filter1d(mean_dsca[w_id,bc_id],sig), ls='--', label='DSCA', c='dodgerblue')
+
+        ax.plot(a[0,:,0], label='base clf', color='orange')
+        ax.plot(b[0,:,0], ls='--', label='MEAN', c='tomato')
+        ax.plot(c[0,:,0], ls='--', label='DSCA', c='dodgerblue')
 
     plt.legend()
     plt.tight_layout()
