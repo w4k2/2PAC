@@ -32,7 +32,7 @@ for bc_id, bc in enumerate(base_clfs):
 
     # plot
     plt.clf()
-    fig, axx = plt.subplots(3,3,figsize=(12,12),sharex=True)
+    fig, axx = plt.subplots(3,3,figsize=(8*1.618, 8),sharex=True, sharey=True)
     fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     axx = axx.ravel()
@@ -55,11 +55,13 @@ for bc_id, bc in enumerate(base_clfs):
         ax.plot(borders, mean_dsca[w_id,bc_id,0,:], ls='--', label='DSCA c: %s' % criteria[0], c='dodgerblue')
         ax.plot(borders, mean_dsca[w_id,bc_id,1,:], ls=':', label='DSCA c: %s' % criteria[1], c='dodgerblue')
 
-    plt.legend()
+        ax.set_ylim(.5,1)
+        ax.set_xlim(np.min(borders), np.max(borders))
+        ax.grid(ls=":")
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+    plt.legend(ncol=2, frameon=False)
     plt.tight_layout()
     fig.subplots_adjust(top=0.93)
     plt.savefig('figures/e1_%s.png' % base_clfs_names[bc_id])
-    
-    
-
-
