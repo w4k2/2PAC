@@ -29,6 +29,10 @@ class StreamingEnsemble(ClassifierMixin, BaseEstimator):
                 raise ValueError("number of features does not match")
         self.X_, self.y_ = X, y
 
+        # Wulgarny fix
+        if len(np.unique(y)) != len(classes):
+            y[:len(classes)] = classes
+
         # Check classes
         self.classes_ = classes
         if self.classes_ is None:
