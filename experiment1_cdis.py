@@ -74,5 +74,7 @@ for r in range(reps):
         results[r, w_id] = eval.scores
 
 np.save('res_e1_cdis', results)
+np.save('estim_err_cdis', estim_errs)
+
 
 pbar.close()

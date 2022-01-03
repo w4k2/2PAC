@@ -1,10 +1,10 @@
-from typing import OrderedDict
 import config
 import strlearn as sl
 import numpy as np
 from meta import Meta
 from sklearn.base import clone
 from MEAN import MEAN
+from PREV import PREV
 from RFR import RFR
 from DSCA import DSCA
 from sklearn.metrics import balanced_accuracy_score
@@ -21,7 +21,7 @@ n_chunks=str_static['n_chunks']
 reps=10
 random_states = np.random.randint(0,100000,reps)
 
-pe_num = 2
+pe_num = 3
 
 meta_cnt = (len(base_clfs) * pe_num ) + len(base_clfs)
 results = np.zeros((reps, len(weights), meta_cnt, n_chunks-1, 1))
@@ -41,8 +41,11 @@ for r in range(reps):
         base_metas.append(clone(base_clfs[0]))
         base_metas.append(clone(base_clfs[1]))
         base_metas.append(clone(base_clfs[2]))
+        base_metas.append(clone(base_clfs[3]))
+        base_metas.append(clone(base_clfs[4]))
         for bc_id, bc in enumerate(base_clfs):
             base_metas.append(Meta(clone(bc), MEAN(), criterion='min', border=0.25))
+            base_metas.append(Meta(clone(bc), PREV(), criterion='min', border=0.25))
             # base_metas.append(Meta(clone(bc), (random_state = 123), criterion=c, border=b))
             base_metas.append(Meta(clone(bc), DSCA(random_state = 123), criterion='min', border=0.5))
 
