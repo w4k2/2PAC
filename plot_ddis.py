@@ -35,7 +35,8 @@ for bc_id, bc in enumerate(base_clfs):
     sig = 5
 
     plt.clf()
-    fig, axx = plt.subplots(3,4,figsize=(17,10),sharex=True)
+    fig, axx = plt.subplots(3,4,figsize=(8*1.618, 8),sharex=True, sharey=True)
+
     fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     axx = axx.ravel()
@@ -63,13 +64,16 @@ for bc_id, bc in enumerate(base_clfs):
         ax.plot(b[0,:,0], ls='--', label='MEAN', c='tomato')
         ax.plot(c[0,:,0], ls='--', label='DSCA', c='dodgerblue')
 
+
+        ax.set_ylim(.5,1)
+        ax.set_xlim(0, 500)
+        ax.grid(ls=":")
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
     plt.legend()
     plt.tight_layout()
     fig.subplots_adjust(top=0.93)
     # plt.savefig('foo.png')
     # exit()
     plt.savefig('figures/eddis_%s.png' % base_clfs_names[bc_id])
-    
-    
-
-

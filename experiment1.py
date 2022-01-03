@@ -32,7 +32,7 @@ weights:
 (.025, .05)
 """
 
-#TODO bład estymacji? 
+#TODO bład estymacji?
 
 import config
 import strlearn as sl
@@ -83,7 +83,7 @@ for r in range(reps):
                     base_metas.append(Meta(clone(bc), MEAN(), criterion=c, border=b))
                     # base_metas.append(Meta(clone(bc), (random_state = 123), criterion=c, border=b))
                     base_metas.append(Meta(clone(bc), DSCA(random_state = 123), criterion=c, border=b))
-        
+
         # stream
         config = {
             **str_static,
@@ -103,6 +103,3 @@ for r in range(reps):
 np.save('res_e1', results)
 
 pbar.close()
-
-
-
