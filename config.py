@@ -31,10 +31,31 @@ def str_weights():
     'ddis_2,5': {'weights':(.025, .1)}
     }
 
+def str_weights_sis():
+    return {
+    'sis_10': {'weights':[0.1, 0.9]},
+    'sis_5': {'weights':[0.05, 0.95]},
+    'sis_2,5': {'weights':[0.025, 0.975]}
+    }
+
+def str_weights_cdis():
+    return {  
+    'cdis_75': {'weights':(4, 5, .75)},
+    'cdis_90': {'weights':(4, 5, .9)},
+    'cdis_100': {'weights':(4, 5, 1.)}
+    }
+
+def str_weights_ddis():
+    return {   
+    'ddis_10': {'weights':(.1, .1)},
+    'ddis_5': {'weights':(.05, .1)},
+    'ddis_2,5': {'weights':(.025, .1)}
+    }
+
 def str_weights_names():
     return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.1','DDIS .05/.1','DDIS .025/.1']
 
-def str_weights_ddis():
+def str_weights_ddis3():
     return {   
     'ddis_10_2,5': {'weights':(.1, .025)},
     'ddis_5_2,5': {'weights':(.05, .025)},
@@ -74,8 +95,24 @@ def base_clfs():
         # # SGDClassifier(loss='modified_huber'),
         SEA2(KNeighborsClassifier()),
         SEA2(SVC(probability=True)),
-        # HoeffdingTreeClassifier()
+        HoeffdingTreeClassifier()
     ]
 
+def base_clfs_no_mlp():
+    return [
+        GaussianNB(),
+        # MLPClassifier(),
+        # # SGDClassifier(loss='modified_huber'),
+        SEA2(KNeighborsClassifier()),
+        SEA2(SVC(probability=True)),
+        HoeffdingTreeClassifier()
+    ]
+
+def base_clfs_mlp():
+    return [
+        MLPClassifier(random_state=123)
+    ]
+
+
 def base_clf_names():
-    return ['GNB', 'MLP', 'KNN', 'SVM']
+    return ['GNB', 'MLP', 'KNN', 'SVM', 'HTC']

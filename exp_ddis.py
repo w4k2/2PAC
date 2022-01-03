@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 np.random.seed(1231)
 
-weights = config.str_weights_ddis()
+weights = config.str_weights_ddis3()
 base_clfs = config.base_clfs()
 str_static = config.str_static()
 n_chunks=str_static['n_chunks']
@@ -23,7 +23,7 @@ random_states = np.random.randint(0,100000,reps)
 
 pe_num = 2
 
-meta_cnt = (len(base_clfs) * pe_num ) + 3
+meta_cnt = (len(base_clfs) * pe_num ) + len(base_clfs)
 results = np.zeros((reps, len(weights), meta_cnt, n_chunks-1, 1))
 # reps x weights x (base clfs, prior estims) x chunks x BAC
 
