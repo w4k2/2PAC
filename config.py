@@ -3,6 +3,10 @@ import strlearn as sl
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import SGDClassifier
+from SEA2 import SEA2
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from skmultiflow.trees import HoeffdingTreeClassifier
 
 
 def str_static():
@@ -22,13 +26,13 @@ def str_weights():
     'cdis_75': {'weights':(4, 5, .75)},
     'cdis_90': {'weights':(4, 5, .9)},
     'cdis_100': {'weights':(4, 5, 1.)},    
-    'ddis_10': {'weights':(.1, .05)},
-    'ddis_5': {'weights':(.05, .05)},
-    'ddis_2,5': {'weights':(.025, .05)}
+    'ddis_10': {'weights':(.1, .1)},
+    'ddis_5': {'weights':(.05, .1)},
+    'ddis_2,5': {'weights':(.025, .1)}
     }
 
 def str_weights_names():
-    return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.05','DDIS .05/.05','DDIS .025/.05']
+    return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.1','DDIS .05/.1','DDIS .025/.1']
 
 def str_weights_ddis():
     return {   
@@ -56,8 +60,8 @@ def str_weights_names_ddis():
 def criteria():
     return ['min', 'max']
 
-def corrections():
-    return [False, True] # chyba zawsze true dla ulatwienia
+# def corrections():
+#     return [False, True] # chyba zawsze true dla ulatwienia ??
 
 def borders():
     #tylko dla correction == True
@@ -67,8 +71,11 @@ def base_clfs():
     return [
         GaussianNB(),
         MLPClassifier(),
-        SGDClassifier(loss='modified_huber'),
+        # # SGDClassifier(loss='modified_huber'),
+        SEA2(KNeighborsClassifier()),
+        SEA2(SVC(probability=True)),
+        HoeffdingTreeClassifier()
     ]
 
 def base_clf_names():
-    return ['GNB', 'MLP', 'SGD']
+    return ['GNB', 'MLP', 'KNN', 'SVM', 'HTC']

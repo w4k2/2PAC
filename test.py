@@ -1,4 +1,5 @@
 import numpy as np
+from PREV import PREV
 import strlearn as sl
 from meta import Meta
 from DSCA import DSCA
@@ -14,8 +15,9 @@ from sklearn.neural_network import MLPClassifier
 from SEA2 import SEA2
 from sklearn.linear_model import SGDClassifier
 from RFR import RFR
+from skmultiflow.trees import HoeffdingTreeClassifier
 
-weights = (.035, .05)
+weights = (.01, .05)
 # weights = (4, 5, .75)
 # weights = [0.025, 0.975]
 # weights=[0.975, 0.025]
@@ -37,7 +39,8 @@ stream = sl.streams.StreamGenerator(
     class_sep=1,
 )
 
-base = SEA2(KNeighborsClassifier())
+# base = SEA2(KNeighborsClassifier())
+base = HoeffdingTreeClassifier()
 # base = SGDClassifier(loss='modified_huber')
 # base = MLPClassifier()
 # base = GaussianNB()
@@ -45,6 +48,7 @@ base = SEA2(KNeighborsClassifier())
 meta = Meta(base_clf=clone(base), prior_estimator=DSCA(), correction=True, criterion='min', resample=False, border=0.5)
 # meta = Meta(base_clf=clone(base), prior_estimator=MEAN(), correction=True, criterion='min')
 # meta = Meta(base_clf=clone(base), prior_estimator=RFR(), correction=True, criterion='min', border=0.01)
+# meta = Meta(base_clf=clone(base), prior_estimator=PREV(), correction=True, criterion='min', resample=False, border=0.5)
 gnb = clone(base)
 
 eval = sl.evaluators.TestThenTrain(verbose=True, metrics=(accuracy_score, balanced_accuracy_score))
