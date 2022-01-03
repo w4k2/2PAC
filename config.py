@@ -73,9 +73,9 @@ def base_clfs():
         MLPClassifier(),
         # # SGDClassifier(loss='modified_huber'),
         SEA2(KNeighborsClassifier()),
-        SEA2(SVC(probability=True)),
+        # SEA2(SVC(probability=True)),
         HoeffdingTreeClassifier()
     ]
 
 def base_clf_names():
-    return ['GNB', 'MLP', 'KNN', 'SVM', 'HTC']
+    return ['GNB', 'MLP', 'KNN', 'HTC']

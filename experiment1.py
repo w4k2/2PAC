@@ -46,7 +46,7 @@ for r in range(reps):
         base_metas.append(clone(base_clfs[1]))
         base_metas.append(clone(base_clfs[2]))
         base_metas.append(clone(base_clfs[3]))
-        base_metas.append(clone(base_clfs[4]))
+        # base_metas.append(clone(base_clfs[4]))
         for bc_id, bc in enumerate(base_clfs):
             for c_id, c in enumerate(criteria):
                 for b_id, b in enumerate(borders):
