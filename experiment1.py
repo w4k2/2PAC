@@ -1,39 +1,5 @@
-"""
-Hyperparameter optimization
 
-base_clf: [GNB, MLP, SDG(log/modified_huber)] -- optymalizacja dla kazdego
-
-prior_estimator: [DSCA, RFR, MEAN]
-
-parametry:
-criterion: [min, max]
-correction (raczej tylko true)
-resample (raczej nie?)
-border [0.01,0.5]
-
-strumienie:
-
-2 clusters per chunk
-500 chunks x 200 samples
-features: 8
-
-weights:
-- SIS
-[0.1, 0.9]
-[0.05, 0.95]
-[0.025, 0.975]
-- CDIS
-(4, 5, .75)
-(4, 5, .9)
-(4, 5, 1.)
-- DDIS
-(.1, .05)
-(.05, .05)
-(.025, .05)
-"""
-
-#TODO bład estymacji? 
-
+from PREV import PREV
 import config
 import strlearn as sl
 import numpy as np
@@ -60,11 +26,14 @@ n_chunks=str_static['n_chunks']
 reps=10
 random_states = np.random.randint(0,100000,reps)
 
-pe_num = 2
+pe_num = 3
 
-meta_cnt = (len(base_clfs) * len(criteria) * len(borders) * pe_num ) + 3
+meta_cnt = (len(base_clfs) * len(criteria) * len(borders) * pe_num ) + len(base_clfs)
 results = np.zeros((reps, len(weights), meta_cnt, n_chunks-1, 1))
 # reps x weights x (base clfs, criteria, border, prior estims) x chunks x BAC
+
+estim_errs = np.zeros((reps, len(weights), meta_cnt, n_chunks-1))
+
 
 t = reps*len(weights)
 pbar = tqdm(total=t)
@@ -77,10 +46,13 @@ for r in range(reps):
         base_metas.append(clone(base_clfs[0]))
         base_metas.append(clone(base_clfs[1]))
         base_metas.append(clone(base_clfs[2]))
+        base_metas.append(clone(base_clfs[3]))
+        base_metas.append(clone(base_clfs[4]))
         for bc_id, bc in enumerate(base_clfs):
             for c_id, c in enumerate(criteria):
                 for b_id, b in enumerate(borders):
                     base_metas.append(Meta(clone(bc), MEAN(), criterion=c, border=b))
+                    base_metas.append(Meta(clone(bc), PREV(), criterion=c, border=b))
                     # base_metas.append(Meta(clone(bc), (random_state = 123), criterion=c, border=b))
                     base_metas.append(Meta(clone(bc), DSCA(random_state = 123), criterion=c, border=b))
         
@@ -97,6 +69,9 @@ for r in range(reps):
         eval.process(stream, base_metas)
 
         pbar.update(1)
+
+        for bm_i, bm in enumerate(base_metas[len(base_clfs):]):
+            estim_errs[r, w_id, bm_i] = bm.prior_estimator.errs
 
         results[r, w_id] = eval.scores
 
