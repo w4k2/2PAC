@@ -113,6 +113,26 @@ def base_clfs_mlp():
         MLPClassifier(random_state=123)
     ]
 
+def base_clfs_gnb():
+    return [
+        GaussianNB()
+    ]
+
+def base_clfs_knn():
+    return [
+        SEA2(KNeighborsClassifier()),
+    ]
+
+def base_clfs_svc():
+    return [
+        SEA2(SVC(probability=True)),
+    ]
+
+def base_clfs_htc():
+    return [
+        HoeffdingTreeClassifier()
+    ]
+
 
 def base_clf_names():
     return ['GNB', 'MLP', 'KNN', 'SVM', 'HTC']
