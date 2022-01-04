@@ -15,7 +15,7 @@ np.random.seed(1231)
 
 borders = config.borders()
 criteria = config.criteria()
-base_clfs = config.base_clfs_mlp()
+base_clfs = config.base_clfs_svc()
 
 str_static = config.str_static()
 str_weights = config.str_weights()
@@ -73,7 +73,7 @@ for r in range(reps):
 
         results[r, w_id] = eval.scores
 
-np.save('res_e1_mlp', results)
-np.save('estim_err_mlp', estim_errs)
+np.save('res_e1_svc', results)
+np.save('estim_err_svc', estim_errs)
 
 pbar.close()
