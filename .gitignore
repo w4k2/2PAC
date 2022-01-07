@@ -122,3 +122,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+errs_e1_all.npy
+res_e1_all.npy

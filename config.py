@@ -135,4 +135,4 @@ def base_clfs_htc():
 
 
 def base_clf_names():
-    return ['GNB', 'MLP', 'KNN', 'SVM', 'HTC']
+    return ['MLP', 'GNB', 'KNN', 'SVM', 'HTC']
