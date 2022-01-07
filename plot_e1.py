@@ -32,7 +32,8 @@ mean_meta_res = np.mean(mean_meta_res, axis=0)
 # (streams x base_clfs x criteria x borders x (mean, dsca))
 
 mean_mean = mean_meta_res[:,:,:,:,0]
-mean_dsca = mean_meta_res[:,:,:,:,1]
+mena_prev = mean_meta_res[:,:,:,:,1]
+mean_dsca = mean_meta_res[:,:,:,:,2]
 # (streams x base_clfs x criteria x borders)
 
 for bc_id, bc in enumerate(base_clfs):
@@ -58,6 +59,9 @@ for bc_id, bc in enumerate(base_clfs):
 
         ax.plot(borders, mean_mean[w_id,bc_id,0,:], ls='--', label='MEAN c: %s' % criteria[0], c='tomato')
         ax.plot(borders, mean_mean[w_id,bc_id,1,:], ls=':', label='MEAN c: %s' % criteria[1], c='tomato')
+
+        ax.plot(borders, mena_prev[w_id,bc_id,0,:], ls='--', label='PREV c: %s' % criteria[0], c='forestgreen')
+        ax.plot(borders, mena_prev[w_id,bc_id,1,:], ls=':', label='PREV c: %s' % criteria[1], c='forestgreen')
 
         ax.plot(borders, mean_dsca[w_id,bc_id,0,:], ls='--', label='DSCA c: %s' % criteria[0], c='dodgerblue')
         ax.plot(borders, mean_dsca[w_id,bc_id,1,:], ls=':', label='DSCA c: %s' % criteria[1], c='dodgerblue')

@@ -13,22 +13,25 @@ base_clfs_names = config.base_clf_names()
 reps = 10
 chunks = 500
 
+pe=3
+
 # print(borders)
 # exit()
 
-res = np.load('res_e1.npy')
-raw_clfs_res = res[:,:,:3]
+res = np.load('res_e1_all.npy')
+raw_clfs_res = res[:,:,:len(base_clfs)]
 mean_raw_clfs_res = np.mean(raw_clfs_res, axis=0)[:,:,:,0] # (streams x clfs x chunks)
 
-meta_res = res[:,:,3:]
-meta_res = meta_res.reshape((reps,len(weights),len(base_clfs),len(criteria),len(borders),2,chunks-1))
-# (reps x streams x base_clfs x criteria x  borders x (mean, dsca) x chunks-1)
+meta_res = res[:,:,len(base_clfs):]
+meta_res = meta_res.reshape((reps,len(weights),len(base_clfs),len(criteria),len(borders),pe,chunks-1))
+# (reps x streams x base_clfs x criteria x  borders x (mean, prev, dsca) x chunks-1)
 
 mean_meta_res = np.mean(meta_res, axis=0)
 # (streams x base_clfs x criteria x borders x (mean, dsca) x chunks)
 
 mean_mean = mean_meta_res[:,:,:,:,0]
-mean_dsca = mean_meta_res[:,:,:,:,1]
+mean_prev = mean_meta_res[:,:,:,:,1]
+mean_dsca = mean_meta_res[:,:,:,:,2]
 # (streams x base_clfs x criteria x borders)
 
 for bc_id, bc in enumerate(base_clfs):
@@ -56,6 +59,7 @@ for bc_id, bc in enumerate(base_clfs):
         a = scores_to_cummean(raw_res[w_id].reshape(1,chunks-1,1))
         b = scores_to_cummean(mean_mean[w_id,bc_id,0,5].reshape(1,chunks-1,1))
         c = scores_to_cummean(mean_dsca[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
+        d = scores_to_cummean(mean_prev[w_id,bc_id,0,5].reshape(1, chunks-1, 1))
 
         # ax.plot(gaussian_filter1d(raw_res[w_id], sig), label='base clf', color='orange')
         # ax.plot(gaussian_filter1d(mean_mean[w_id,bc_id,0,5],sig), ls='--', label='MEAN', c='tomato')
@@ -64,6 +68,7 @@ for bc_id, bc in enumerate(base_clfs):
         ax.plot(a[0,:,0], label='base clf', color='orange')
         ax.plot(b[0,:,0], ls='--', label='MEAN', c='tomato')
         ax.plot(c[0,:,0], ls='--', label='DSCA', c='dodgerblue')
+        ax.plot(d[0,:,0], ls='--', label='PREV', c='forestgreen')
 
 
         ax.set_ylim(.5,1)
