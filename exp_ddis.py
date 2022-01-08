@@ -1,12 +1,12 @@
 import config
 import strlearn as sl
 import numpy as np
-from meta import Meta
+from methods.meta import Meta
 from sklearn.base import clone
-from MEAN import MEAN
-from PREV import PREV
-from RFR import RFR
-from DSCA import DSCA
+from methods.MEAN import MEAN
+from methods.PREV import PREV
+from methods.RFR import RFR
+from methods.DSCA import DSCA
 from sklearn.metrics import balanced_accuracy_score
 from tqdm import tqdm
 

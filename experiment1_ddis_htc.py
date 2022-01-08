@@ -13,13 +13,12 @@ from tqdm import tqdm
 
 np.random.seed(1231)
 
-weights = config.str_weights()
 borders = config.borders()
 criteria = config.criteria()
-base_clfs = config.base_clfs()
+base_clfs = config.base_clfs_htc()
 
 str_static = config.str_static()
-str_weights = config.str_weights()
+str_weights = config.str_weights_ddis()
 n_chunks=str_static['n_chunks']
 
 reps=10
@@ -28,25 +27,25 @@ random_states = np.random.randint(0,100000,reps)
 pe_num = 3
 
 meta_cnt = (len(base_clfs) * len(criteria) * len(borders) * pe_num ) + len(base_clfs)
-results = np.zeros((reps, len(weights), meta_cnt, n_chunks-1, 1))
+results = np.zeros((reps, len(str_weights), meta_cnt, n_chunks-1, 1))
 # reps x weights x (base clfs, criteria, border, prior estims) x chunks x BAC
 
-estim_errs = np.zeros((reps, len(weights), meta_cnt, n_chunks-1))
+estim_errs = np.zeros((reps, len(str_weights), meta_cnt, n_chunks-1))
 
 
-t = reps*len(weights)
+t = reps*len(str_weights)
 pbar = tqdm(total=t)
 
 for r in range(reps):
-    for w_id, w in enumerate(weights):
+    for w_id, w in enumerate(str_weights):
 
         # new instances of metas
         base_metas=[]
         base_metas.append(clone(base_clfs[0]))
-        base_metas.append(clone(base_clfs[1]))
-        base_metas.append(clone(base_clfs[2]))
-        base_metas.append(clone(base_clfs[3]))
-        # base_metas.append(clone(base_clfs[4]))
+        # base_metas.append(clone(base_clfs[1]))
+        # base_metas.append(clone(base_clfs[2]))
+        # base_metas.append(clone(base_clfs[3]))
+        # # base_metas.append(clone(base_clfs[4]))
         for bc_id, bc in enumerate(base_clfs):
             for c_id, c in enumerate(criteria):
                 for b_id, b in enumerate(borders):
@@ -74,6 +73,8 @@ for r in range(reps):
 
         results[r, w_id] = eval.scores
 
-np.save('res_e1', results)
+np.save('res_e1_ddis_htc', results)
+np.save('estim_err_ddis_htc', estim_errs)
+
 
 pbar.close()

@@ -1,9 +1,9 @@
 import numpy as np
-from PREV import PREV
+from methods.PREV import PREV
 import strlearn as sl
-from meta import Meta
-from DSCA import DSCA
-from MEAN import MEAN
+from methods.meta import Meta
+from methods.DSCA import DSCA
+from methods.MEAN import MEAN
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 from sklearn.metrics import balanced_accuracy_score
@@ -12,9 +12,9 @@ from scipy.signal import medfilt
 from sklearn.base import clone
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-from SEA2 import SEA2
+from methods.SEA2 import SEA2
 from sklearn.linear_model import SGDClassifier
-from RFR import RFR
+from methods.RFR import RFR
 from skmultiflow.trees import HoeffdingTreeClassifier
 
 weights = (.01, .05)

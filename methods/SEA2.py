@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.base import clone
 from sklearn.metrics import accuracy_score
-from StreamingEnsemble2 import StreamingEnsemble
+from methods.StreamingEnsemble2 import StreamingEnsemble
 
 class SEA2(StreamingEnsemble):
     """

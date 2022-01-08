@@ -1,12 +1,12 @@
-from PREV import PREV
+from methods.PREV import PREV
 import config
 import strlearn as sl
 import numpy as np
-from meta import Meta
+from methods.meta import Meta
 from sklearn.base import clone
-from MEAN import MEAN
-from RFR import RFR
-from DSCA import DSCA
+from methods.MEAN import MEAN
+from methods.RFR import RFR
+from methods.DSCA import DSCA
 from sklearn.metrics import balanced_accuracy_score
 from tqdm import tqdm
 
@@ -18,7 +18,7 @@ criteria = config.criteria()
 base_clfs = config.base_clfs_no_mlp()
 
 str_static = config.str_static()
-str_weights = config.str_weights_cdis()
+str_weights = config.str_weights_ddis()
 n_chunks=str_static['n_chunks']
 
 reps=10

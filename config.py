@@ -3,7 +3,7 @@ import strlearn as sl
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import SGDClassifier
-from SEA2 import SEA2
+from methods.SEA2 import SEA2
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from skmultiflow.trees import HoeffdingTreeClassifier
