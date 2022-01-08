@@ -9,19 +9,50 @@ sis_errs = np.load('results/estim_err_sis.npy')[:,:,:-4]
 cdis_res = np.load('results/res_e1_cdis.npy')
 cdis_errs = np.load('results/estim_err_cdis.npy')[:,:,:-4]
 
-ddis_res = np.load('results/res_e1_ddis.npy')
-ddis_errs = np.load('results/estim_err_ddis.npy')[:,:,:-4]
+# ddis (dramat) gnb, knn, svc, htc
+
+ddis_res_gnb = np.load('results/res_e1_gnb.npy')[:,-3:]
+# temp
+ddis_res_htc = np.load('results/res_e1_gnb.npy')[:,-3:]
+ddis_res_svc = np.load('results/res_e1_gnb.npy')[:,-3:]
+ddis_res_knn = np.load('results/res_e1_gnb.npy')[:,-3:]
+
+ddis_raw_gnb = ddis_res_gnb[:,:,0]
+ddis_methods_gnb = ddis_res_gnb[:,:,1:]
+
+ddis_raw_htc = ddis_res_htc[:,:,0]
+ddis_methods_htc = ddis_res_htc[:,:,1:]
+
+ddis_raw_svc = ddis_res_svc[:,:,0]
+ddis_methods_svc = ddis_res_svc[:,:,1:]
+
+ddis_raw_knn = ddis_res_knn[:,:,0]
+ddis_methods_knn = ddis_res_knn[:,:,1:]
+
+
+ddis_raw = np.concatenate((ddis_raw_gnb[:,:,np.newaxis], ddis_raw_knn[:,:,np.newaxis], ddis_raw_svc[:,:,np.newaxis], ddis_raw_htc[:,:,np.newaxis]), axis=2)
+ddis_methods = np.concatenate((ddis_methods_gnb, ddis_methods_knn, ddis_methods_svc, ddis_methods_htc), axis=2)
+print(ddis_methods.shape)
+
+# ------------
+
+ddis_errs_gnb = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
+# temp
+ddis_errs_htc = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
+ddis_errs_svc = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
+ddis_errs_knn = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
+
+ddis_errs = np.concatenate((ddis_errs_gnb, ddis_errs_knn, ddis_errs_svc, ddis_errs_htc), axis=2)
+print(ddis_errs.shape)
 
 # res
 mlp_raw = mlp_res[:,:,0]
 sis_raw = sis_res[:,:,:4]
 cdis_raw = cdis_res[:,:,:4]
-ddis_raw = ddis_res[:,:,:4]
 
 mlp_methods = mlp_res[:,:,1:]
 sis_methods = sis_res[:,:,4:]
 cdis_methods = cdis_res[:,:,4:]
-ddis_methods = ddis_res[:,:,4:]
 
 mlp_raw = mlp_raw.reshape((10,9,1,499,1))
 

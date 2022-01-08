@@ -90,8 +90,8 @@ def borders():
 
 def base_clfs():
     return [
-        GaussianNB(),
         MLPClassifier(),
+        GaussianNB(),
         # # SGDClassifier(loss='modified_huber'),
         SEA2(KNeighborsClassifier()),
         SEA2(SVC(probability=True)),
