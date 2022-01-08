@@ -18,7 +18,7 @@ pe=3
 # print(borders)
 # exit()
 
-res = np.load('res_e1_all.npy')
+res = np.load('results/res_e1_all.npy')
 raw_clfs_res = res[:,:,:len(base_clfs)]
 mean_raw_clfs_res = np.mean(raw_clfs_res, axis=0)[:,:,:,0] # (streams x clfs x chunks)
 

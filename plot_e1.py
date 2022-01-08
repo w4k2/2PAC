@@ -13,7 +13,7 @@ chunks = 500
 
 pe=3
 
-res = np.load('res_e1_all.npy')
+res = np.load('results/res_e1_all.npy')
 raw_clfs_res = res[:,:,:len(base_clfs)]
 print(res.shape)
 print(raw_clfs_res.shape)

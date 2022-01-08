@@ -12,9 +12,6 @@ cdis_errs = np.load('results/estim_err_cdis.npy')[:,:,:-4]
 ddis_res = np.load('results/res_e1_ddis.npy')
 ddis_errs = np.load('results/estim_err_ddis.npy')[:,:,:-4]
 
-print(ddis_res==cdis_res)
-
-
 # res
 mlp_raw = mlp_res[:,:,0]
 sis_raw = sis_res[:,:,:4]
