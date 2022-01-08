@@ -56,7 +56,7 @@ fig, axx = plt.subplots(3,1,figsize=(6, 6*1.618), sharex=True, sharey=True)
 axx = axx.ravel()
 
 t = ['SIS', 'CDIS', 'DDIS']
-cols=['forestgreen', 'dodgerblue', 'tomato']
+cols=['dodgerblue', 'orange', 'tomato']
 c = 0
 for i in range(3):
     ax = axx[i]
@@ -73,4 +73,5 @@ for i in range(3):
     ax.legend()
 
 plt.tight_layout()
+plt.savefig('figures/priors.png')
 plt.savefig('foo.png')

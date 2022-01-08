@@ -55,4 +55,5 @@ for ax in axx[6:]:
 
 plt.legend()
 plt.tight_layout()
+plt.savefig('figures/errors.png')
 plt.savefig('foo.png')
