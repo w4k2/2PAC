@@ -53,7 +53,7 @@ def str_weights_ddis():
     }
 
 def str_weights_names():
-    return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS 0.9', 'CDIS 1.', 'DDIS .1/.1','DDIS .05/.1','DDIS .025/.1']
+    return ['SIS .1', 'SIS .05', 'SIS .025', 'CDIS .75', 'CDIS .9', 'CDIS 1.', 'DDIS .1/.1','DDIS .05/.1','DDIS .025/.1']
 
 def str_weights_ddis3():
     return {   

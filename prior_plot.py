@@ -70,7 +70,7 @@ for i in range(3):
         ax.plot(gaussian_filter1d(mean_priors[c],1), color=cols[c%3], label=weigths_names[c])
         c+=1
     
-    ax.legend()
+    ax.legend(loc=1)
 
 plt.tight_layout()
 plt.savefig('figures/priors.png')

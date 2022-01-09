@@ -34,7 +34,7 @@ for w_id, w in enumerate(weights):
     ax = axx[w_id]
     ax.set_title(weigths_names[w_id])
     ax.set_xlabel('chunk id')
-    ax.set_ylabel('estimation error')
+    
 
     level=np.zeros((499))
 
@@ -52,6 +52,9 @@ for ax in axx[3:6]:
     ax.set_ylim(0,0.7)
 for ax in axx[6:]:
     ax.set_ylim(0,0.3)
+
+for ax in axx[::3]:
+    ax.set_ylabel('estimation error')
 
 plt.legend()
 plt.tight_layout()

@@ -68,11 +68,13 @@ for bc_id, bc in enumerate(base_clfs):
 
         # ax.set_ylim(.5,1)
         ax.set_xlim(np.min(borders), np.max(borders))
+
         ax.grid(ls=":")
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
 
-    plt.legend(ncol=2, frameon=False)
+    plt.legend(ncol=4, frameon=False, loc='lower center')
+
     plt.tight_layout()
-    fig.subplots_adjust(top=0.93)
+    fig.subplots_adjust(top=0.92)
     plt.savefig('figures/e1_%s.png' % base_clfs_names[bc_id])
