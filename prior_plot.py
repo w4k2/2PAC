@@ -74,4 +74,5 @@ for i in range(3):
 
 plt.tight_layout()
 plt.savefig('figures/priors.png')
+plt.savefig('figures/priors.eps')
 plt.savefig('foo.png')

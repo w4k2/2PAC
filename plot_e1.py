@@ -55,7 +55,7 @@ for bc_id, bc in enumerate(base_clfs):
         # ax.set_ylim(.5,1)
         ax.set_ylabel('BAC')
         ax.set_xlabel('border')
-        ax.hlines(raw_res[w_id],0,borders[-1], label='base clf', color='orange')
+        # ax.hlines(raw_res[w_id],0,borders[-1], label='base clf', color='orange')
 
         ax.plot(borders, mean_mean[w_id,bc_id,0,:], ls='--', label='MEAN c: %s' % criteria[0], c='tomato')
         ax.plot(borders, mean_mean[w_id,bc_id,1,:], ls=':', label='MEAN c: %s' % criteria[1], c='tomato')
@@ -73,7 +73,7 @@ for bc_id, bc in enumerate(base_clfs):
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
 
-    plt.legend(ncol=4, frameon=False, loc='lower center')
+    plt.legend(ncol=3, frameon=False, loc='lower center')
 
     plt.tight_layout()
     fig.subplots_adjust(top=0.92)

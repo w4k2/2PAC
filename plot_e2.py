@@ -59,7 +59,7 @@ for bc_id, bc in enumerate(base_clfs):
         a = scores_to_cummean(raw_res[w_id].reshape(1,chunks-1,1))
         b = scores_to_cummean(mean_mean[w_id,bc_id,0,5].reshape(1,chunks-1,1))
         c = scores_to_cummean(mean_dsca[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
-        d = scores_to_cummean(mean_prev[w_id,bc_id,0,5].reshape(1, chunks-1, 1))
+        d = scores_to_cummean(mean_prev[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
 
         # ax.plot(gaussian_filter1d(raw_res[w_id], sig), label='base clf', color='orange')
         # ax.plot(gaussian_filter1d(mean_mean[w_id,bc_id,0,5],sig), ls='--', label='MEAN', c='tomato')
