@@ -13,7 +13,7 @@ chunks = 500
 
 pe=3
 
-res = np.load('res_e1_all.npy')
+res = np.load('results/res_e1_all.npy')
 raw_clfs_res = res[:,:,:len(base_clfs)]
 print(res.shape)
 print(raw_clfs_res.shape)
@@ -40,7 +40,7 @@ for bc_id, bc in enumerate(base_clfs):
 
     # plot
     plt.clf()
-    fig, axx = plt.subplots(3,3,figsize=(8*1.618, 8),sharex=True, sharey=True)
+    fig, axx = plt.subplots(3,3,figsize=(8*1.618, 8), sharex=True,)
     fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     axx = axx.ravel()
@@ -66,7 +66,7 @@ for bc_id, bc in enumerate(base_clfs):
         ax.plot(borders, mean_dsca[w_id,bc_id,0,:], ls='--', label='DSCA c: %s' % criteria[0], c='dodgerblue')
         ax.plot(borders, mean_dsca[w_id,bc_id,1,:], ls=':', label='DSCA c: %s' % criteria[1], c='dodgerblue')
 
-        ax.set_ylim(.5,1)
+        # ax.set_ylim(.5,1)
         ax.set_xlim(np.min(borders), np.max(borders))
         ax.grid(ls=":")
         ax.spines['top'].set_visible(False)
