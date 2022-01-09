@@ -8,35 +8,34 @@ criterion:
 'max' - maksymalne wparcie dla klasy mniejszosciowej
 
 correction - czy uzywac predykcji klasyfikatora bazowego jako bazy
-resample - smote podczas fit klasyfikatora
 border - od jakiego poziomu niezbalansowania korekcja predykcji (gdy estymacja a priori dla klasy 
         mniejszosciowej jest mniejsza niz border, nastepuje korekcja)
 """
 
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, prior_estimator, criterion='min', correction=True, resample=False, border=0.1):
+    def __init__(self, base_clf, prior_estimator, criterion='min', correction=True, border=0.1):
         self.base_clf = base_clf
         self.prior_estimator = prior_estimator
         self.criterion=criterion
         self.correction = correction
-        self.resample=resample
+        # self.resample=resample
         self.border = border
 
         self.clf = clone(base_clf)
-        self.smote = SMOTE(random_state=123)
+        # self.smote = SMOTE(random_state=123)
 
     def partial_fit(self, X, y, classes):
 
-        #SMOTE
-        if self.resample:
-            try:
-                X_res, y_res = self.smote.fit_resample(X, y)
-                self.clf.partial_fit(X_res, y_res, classes)
-            except:
-                self.clf.partial_fit(X, y, classes)
-        else:
-            self.clf.partial_fit(X, y, classes)
-
+        # #SMOTE
+        # if self.resample:
+        #     try:
+        #         X_res, y_res = self.smote.fit_resample(X, y)
+        #         self.clf.partial_fit(X_res, y_res, classes)
+        #     except:
+        #         self.clf.partial_fit(X, y, classes)
+        # else:
+        
+        self.clf.partial_fit(X, y, classes)
         self.prior_estimator.feed(X, y, classes)
         return self
 

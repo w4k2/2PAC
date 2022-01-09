@@ -12,10 +12,12 @@ cdis_errs = np.load('results/estim_err_cdis.npy')[:,:,:-4]
 # ddis (dramat) gnb, knn, svc, htc
 
 ddis_res_gnb = np.load('results/res_e1_gnb.npy')[:,-3:]
-# temp
-ddis_res_htc = np.load('results/res_e1_gnb.npy')[:,-3:]
-ddis_res_svc = np.load('results/res_e1_gnb.npy')[:,-3:]
+ddis_res_htc = np.load('results/res_e1_ddis_htc.npy')
+ddis_res_svc = np.load('results/res_e1_ddis_svc.npy')
+#temp
 ddis_res_knn = np.load('results/res_e1_gnb.npy')[:,-3:]
+
+print(ddis_res_gnb.shape, ddis_res_htc.shape)
 
 ddis_raw_gnb = ddis_res_gnb[:,:,0]
 ddis_methods_gnb = ddis_res_gnb[:,:,1:]
@@ -37,7 +39,7 @@ print(ddis_methods.shape)
 # ------------
 
 ddis_errs_gnb = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
-# temp
+# dla kazdego bedzie to samo
 ddis_errs_htc = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
 ddis_errs_svc = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
 ddis_errs_knn = np.load('results/estim_err_gnb.npy')[:,-3:,:-1]
