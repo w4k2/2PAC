@@ -81,4 +81,5 @@ for bc_id, bc in enumerate(base_clfs):
     plt.tight_layout()
     fig.subplots_adjust(top=0.92)
     plt.savefig('foo.png')
+    plt.savefig('figures/e2_%s.eps' % base_clfs_names[bc_id])
     plt.savefig('figures/e2_%s.png' % base_clfs_names[bc_id])
