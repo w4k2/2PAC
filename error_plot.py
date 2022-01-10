@@ -25,7 +25,8 @@ errs_dsca = np.mean(np.abs(errs[:,:,2,:]), axis=0)
 
 print(errs.shape)
 
-fig, axx = plt.subplots(3,3,figsize=(8*1.618, 8), sharex=True)
+fig, axx = plt.subplots(3,3,figsize=(7*1.618, 7),
+                        sharex=True)
 axx = axx.ravel()
 
 xx = np.linspace(1,500,499)
@@ -34,7 +35,6 @@ for w_id, w in enumerate(weights):
     ax = axx[w_id]
     ax.set_title(weigths_names[w_id])
     ax.set_xlabel('chunk id')
-    
 
     level=np.zeros((499))
 
@@ -42,12 +42,17 @@ for w_id, w in enumerate(weights):
     b = gaussian_filter1d(errs_prev[w_id],s)
     a = gaussian_filter1d(errs_dsca[w_id],s)
 
-    ax.fill_between(xx, level, level+a, color='orange', label='DSCA')
+    ax.fill_between(xx, level, level+a, color='tomato', label='DSCA')
     ax.fill_between(xx, level+a, level+a+b, color='dodgerblue', label='PREV')
-    ax.fill_between(xx, level+a+b, level+a+b+c, color='tomato', label='MEAN')
+    ax.fill_between(xx, level+a+b, level+a+b+c, color='orange', label='MEAN')
+
+    ax.grid(ls=":")
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_xlim(0,500)
 
 for ax in axx[:3]:
-    ax.set_ylim(0,0.11)
+   ax.set_ylim(0,0.11)
 for ax in axx[3:6]:
     ax.set_ylim(0,0.7)
 for ax in axx[6:]:
@@ -56,7 +61,7 @@ for ax in axx[6:]:
 for ax in axx[::3]:
     ax.set_ylabel('estimation error')
 
-plt.legend()
+plt.legend(frameon=False)
 plt.tight_layout()
 plt.savefig('figures/errors.png')
 plt.savefig('figures/errors.eps')

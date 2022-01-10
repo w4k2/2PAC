@@ -40,7 +40,7 @@ for bc_id, bc in enumerate(base_clfs):
 
     # plot
     plt.clf()
-    fig, axx = plt.subplots(3,3,figsize=(8*1.618, 8), sharex=True,)
+    fig, axx = plt.subplots(3,3,figsize=(7, 6), sharex=True,)
     fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     axx = axx.ravel()
@@ -53,28 +53,43 @@ for bc_id, bc in enumerate(base_clfs):
 
         ax.set_title(weigths_names[w_id])
         # ax.set_ylim(.5,1)
-        ax.set_ylabel('BAC')
-        ax.set_xlabel('border')
+        if w_id % 3 == 0:
+            ax.set_ylabel('BAC')
+        if w_id // 3 == 2:
+            ax.set_xlabel('border')
         # ax.hlines(raw_res[w_id],0,borders[-1], label='base clf', color='orange')
 
-        ax.plot(borders, mean_mean[w_id,bc_id,0,:], ls='--', label='MEAN c: %s' % criteria[0], c='tomato')
+        ax.plot(borders, mean_mean[w_id,bc_id,0,:], ls='-', label='MEAN c: %s' % criteria[0], c='tomato')
         ax.plot(borders, mean_mean[w_id,bc_id,1,:], ls=':', label='MEAN c: %s' % criteria[1], c='tomato')
 
-        ax.plot(borders, mena_prev[w_id,bc_id,0,:], ls='--', label='PREV c: %s' % criteria[0], c='forestgreen')
+        ax.plot(borders, mena_prev[w_id,bc_id,0,:], ls='-', label='PREV c: %s' % criteria[0], c='forestgreen')
         ax.plot(borders, mena_prev[w_id,bc_id,1,:], ls=':', label='PREV c: %s' % criteria[1], c='forestgreen')
 
-        ax.plot(borders, mean_dsca[w_id,bc_id,0,:], ls='--', label='DSCA c: %s' % criteria[0], c='dodgerblue')
+        ax.plot(borders, mean_dsca[w_id,bc_id,0,:], ls='-', label='DSCA c: %s' % criteria[0], c='dodgerblue')
         ax.plot(borders, mean_dsca[w_id,bc_id,1,:], ls=':', label='DSCA c: %s' % criteria[1], c='dodgerblue')
 
-        # ax.set_ylim(.5,1)
+        #ax.set_ylim(.5,1)
         ax.set_xlim(np.min(borders), np.max(borders))
 
         ax.grid(ls=":")
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
 
-    plt.legend(ncol=3, frameon=False, loc='lower center')
+        handles, labels = ax.get_legend_handles_labels()
+
+    fig.legend(handles, labels, loc='lower center', ncol=3, frameon=False)
+    #plt.legend(ncol=3, frameon=False, loc='lower center')
+    #plt.legend(
+    #    loc="lower center",
+    #    ncol=2,
+    #    columnspacing=1,
+    #    frameon=False,
+    #    bbox_to_anchor=(-0.5, -0.3),
+    #    fontsize=8,
+    #)
 
     plt.tight_layout()
-    fig.subplots_adjust(top=0.92)
+    fig.subplots_adjust(top=0.9, bottom=.15)
+    plt.savefig('foo.png')
     plt.savefig('figures/e1_%s.png' % base_clfs_names[bc_id])
+    plt.savefig('figures/e1_%s.eps' % base_clfs_names[bc_id])

@@ -11,7 +11,7 @@ criteria = config.criteria()
 base_clfs = config.base_clfs()
 base_clfs_names = config.base_clf_names()
 reps = 10
-chunks = 500
+chunks = 100
 pe=3
 
 np.random.seed(1231)
@@ -29,11 +29,12 @@ for r in random_states:
             **weights[w],
             'random_state': random_states[0]
                     }
+        config['n_chunks'] = chunks
         stream = sl.streams.StreamGenerator(**config)
 
-        
+
         s_priors = []
-        for i in range(500):
+        for i in range(chunks):
             unique, counts  = np.unique(stream.get_chunk()[1], return_counts=True)
             if len(unique) == 1:
                 if unique[0] == 0:
@@ -42,10 +43,10 @@ for r in random_states:
                     s_priors.append(0.)
             else:
                 s_priors.append(counts[0] / 200)
-            
+
         priors.append(s_priors)
 
-priors = np.array(priors).reshape(reps,9,500)
+priors = np.array(priors).reshape(reps,9,chunks)
 priors = priors[:,:,1:]
 
 print(priors.shape)
@@ -57,6 +58,7 @@ axx = axx.ravel()
 
 t = ['SIS', 'CDIS', 'DDIS']
 cols=['dodgerblue', 'orange', 'tomato']
+lss=['-', '--', ':']
 c = 0
 for i in range(3):
     ax = axx[i]
@@ -67,10 +69,16 @@ for i in range(3):
     ax.set_ylim(0,1)
 
     for j in range(3):
-        ax.plot(gaussian_filter1d(mean_priors[c],1), color=cols[c%3], label=weigths_names[c])
+        ax.plot(mean_priors[c], ls=lss[c%3], color='black', label=weigths_names[c])
         c+=1
-    
-    ax.legend(loc=1)
+
+    ax.legend(loc=1, frameon=True)
+
+    ax.grid(ls=":")
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.set_xlim(0,chunks)
+    ax.set_ylim(0,1)
 
 plt.tight_layout()
 plt.savefig('figures/priors.png')
