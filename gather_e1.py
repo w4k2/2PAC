@@ -14,8 +14,7 @@ cdis_errs = np.load('results/estim_err_cdis.npy')[:,:,:-4]
 ddis_res_gnb = np.load('results/res_e1_gnb.npy')[:,-3:]
 ddis_res_htc = np.load('results/res_e1_ddis_htc.npy')
 ddis_res_svc = np.load('results/res_e1_ddis_svc.npy')
-#temp
-ddis_res_knn = np.load('results/res_e1_gnb.npy')[:,-3:]
+ddis_res_knn = np.load('results/res_e1_ddis_knn.npy')
 
 print(ddis_res_gnb.shape, ddis_res_htc.shape)
 
