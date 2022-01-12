@@ -53,6 +53,8 @@ print(priors.shape)
 
 mean_priors = np.mean(priors, axis=0)
 
+# np.save('priors', mean_priors)
+
 fig, axx = plt.subplots(3,1,figsize=(6, 6*1.618), sharex=True, sharey=True)
 axx = axx.ravel()
 
