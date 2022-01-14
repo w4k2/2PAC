@@ -27,7 +27,7 @@ meta_res = meta_res.reshape((reps,len(weights),len(base_clfs),len(criteria),len(
 # (reps x streams x base_clfs x criteria x  borders x (mean, prev, dsca) x chunks-1)
 
 mean_meta_res = np.mean(meta_res, axis=0)
-# (streams x base_clfs x criteria x borders x (mean, dsca) x chunks)
+# (streams x base_clfs x criteria x borders x (mean, prev, dsca) x chunks)
 
 mean_mean = mean_meta_res[:,:,:,:,0]
 mean_prev = mean_meta_res[:,:,:,:,1]
