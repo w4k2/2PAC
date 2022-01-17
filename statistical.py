@@ -233,9 +233,9 @@ for est_id, est_name in enumerate(estimators):
             for j in range(3):
                 for k in range(5):
                     # ax[j, k].xaxis.set_tick_params(rotation=-60)
-                    # smap = tables[i][
-                    #     (k * lenj) : ((k + 1) * lenj), (j * lenk) : ((j + 1) * lenk)
-                    # ]
+                    bacmap = tables[i][
+                        (k * lenj) : ((k + 1) * lenj), (j * lenk) : ((j + 1) * lenk)
+                    ]
                     smap = debs[i][
                         (k * lenj) : ((k + 1) * lenj), (j * lenk) : ((j + 1) * lenk)
                     ]
@@ -248,7 +248,7 @@ for est_id, est_name in enumerate(estimators):
                             ax[j, k].text(
                                 l,
                                 m,
-                                "%.3f" % smap[l, m],
+                                "%.3f" % bacmap[l, m],
                                 color="black" if smap[l, m] > np.mean(smap) else "white",
                                 ha="center",
                                 va="center",
