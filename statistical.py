@@ -3,6 +3,8 @@ import config
 from scipy.stats import wilcoxon, ttest_rel, ttest_ind
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+from skimage.measure import label
+import matplotlib.patches as patches
 
 alpha = .05
 
@@ -216,7 +218,7 @@ for est_id, est_name in enumerate(estimators):
             # f.close()
 
             plt.clf()
-            fig, ax = plt.subplots(3, 5, sharex=True, sharey=True, figsize=(11, 6))
+            fig, ax = plt.subplots(3, 5, sharex=True, sharey=True, figsize=(6, 6))
 
             lenj = len(keys[pair[0]])
             lenk = len(keys[pair[1]])
@@ -241,10 +243,56 @@ for est_id, est_name in enumerate(estimators):
                     ]
 
                     im = ax[j, k].imshow(smap.T, cmap="binary_r", aspect="auto")
+
                     # Values
-                    print(smap, smap.shape, lenj, lenk)
+                    smap = np.around(smap, 3)
+                    smapunique = np.unique(smap)
+                    saddress = np.array(np.meshgrid(*[range(_) for _ in smap.shape]))
+
+                    for sunique in smapunique:
+                        mask = smap.T == sunique
+
+                        regions = label(mask, connectivity=1)
+
+                        for sub_idx in range(np.max(regions)):
+                            print('S', sub_idx)
+                            submask = regions == (sub_idx+1)
+                            print(submask)
+
+                            vvvvv = np.mean(bacmap[submask.T])
+
+                            aa = saddress[0,:,:][submask]
+                            bb = saddress[1,:,:][submask]
+                            a = np.mean(aa, axis=0)
+                            b = np.mean(bb, axis=0)
+                            #print(saddress[0,:,:])
+
+                            rect = patches.Rectangle((np.min(aa)-.25,
+                                                      np.min(bb)-.25),
+                                                     np.max(aa)-np.min(aa)+.5,
+                                                     np.max(bb)-np.min(bb)+.5, linewidth=1,
+                                                     edgecolor='tomato',
+                                                     ls=':', facecolor='none')
+
+                            # Add the patch to the Axes
+                            ax[j,k].add_patch(rect)
+
+                            print(a)
+                            print(b)
+                            ax[j, k].text(
+                                a,
+                                b,
+                                "%.3f" % vvvvv,
+                                color="black" if sunique > np.mean(smap) else "white",
+                                ha="center",
+                                va="center",
+                                fontsize=9,
+                                # rotation=90
+                            )
+
                     for l in range(lenj):
                         for m in range(lenk):
+                            '''
                             ax[j, k].text(
                                 l,
                                 m,
@@ -255,13 +303,15 @@ for est_id, est_name in enumerate(estimators):
                                 fontsize=9,
                                 # rotation=90
                             )
+                            '''
+                            pass
                     if j == 2:
                         ax[j, k].set_xlabel(clfs[k])
                     if k == 0:
                         ax[j, k].set_ylabel(strs[j])
 
-            fig.subplots_adjust(top=0.85, left=0.17, right=0.95, bottom=0.12)
-            cbar_ax = fig.add_axes([0.17, 0.9, 0.78, 0.025])
+            fig.subplots_adjust(top=0.85, left=0.12, right=0.95, bottom=0.1)
+            cbar_ax = fig.add_axes([0.1, 0.9, 0.85, 0.025])
 
             fig.colorbar(im, cax=cbar_ax, orientation="horizontal", ticks=[0.05, 1])
 
@@ -269,9 +319,13 @@ for est_id, est_name in enumerate(estimators):
             #     "%s / %s / %s / %s" % (est_name, str_name, parameters[pair[0]], parameters[pair[1]]), fontsize=12, x=0.57
             # )
             fig.suptitle(
-                "%s | %s" % (est_name, str_name), fontsize=12, x=0.57
+                "%s | %s" % (est_name, str_name), fontsize=12, x=0.5
             )
+            #plt.tight_layout()
 
+            plt.savefig('foo.png')
             plt.savefig("figures/stat/%s_%s.png" % (est_name, str_name), dpi=200)
             plt.close()
             # plt.savefig("figures/stat/p%i.eps" % i)
+
+            exit()
