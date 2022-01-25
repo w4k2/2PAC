@@ -4,7 +4,7 @@ from scipy.stats import wilcoxon, ttest_rel, ttest_ind
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 from skimage.measure import label
-import matplotlib.patches as patches
+# import matplotlib.patches as patches
 
 alpha = .05
 
@@ -260,6 +260,7 @@ for est_id, est_name in enumerate(estimators):
                             print(submask)
 
                             vvvvv = np.mean(bacmap[submask.T])
+                            vvvvv = sunique
 
                             aa = saddress[0,:,:][submask]
                             bb = saddress[1,:,:][submask]
@@ -325,7 +326,9 @@ for est_id, est_name in enumerate(estimators):
 
             plt.savefig('foo.png')
             plt.savefig("figures/stat/%s_%s.png" % (est_name, str_name), dpi=200)
+            plt.savefig("figures/stat/%s_%s.eps" % (est_name, str_name), dpi=200)
+
             plt.close()
             # plt.savefig("figures/stat/p%i.eps" % i)
 
-            exit()
+            # exit()
