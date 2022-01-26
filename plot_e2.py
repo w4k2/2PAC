@@ -13,10 +13,10 @@ base_clfs_names = config.base_clf_names()
 reps = 10
 chunks = 500
 
-wn = np.array(weigths_names)[[2,5,7]]
+wn = np.array(weigths_names)[[2,5,8]]
 pe=3
 
-# print(borders)
+# print(borders[5]) #28%
 # exit()
 
 res = np.load('results/res_e1_all.npy')
@@ -30,9 +30,9 @@ meta_res = meta_res.reshape((reps,len(weights),len(base_clfs),len(criteria),len(
 mean_meta_res = np.mean(meta_res, axis=0)
 # (streams x base_clfs x criteria x borders x (mean, prev, dsca) x chunks)
 
-mean_mean = mean_meta_res[[2,5,7],:,:,:,0]
-mean_prev = mean_meta_res[[2,5,7],:,:,:,1]
-mean_dsca = mean_meta_res[[2,5,7],:,:,:,2]
+mean_mean = mean_meta_res[[2,5,8],:,:,:,0]
+mean_prev = mean_meta_res[[2,5,8],:,:,:,1]
+mean_dsca = mean_meta_res[[2,5,8],:,:,:,2]
 # (streams x base_clfs x criteria x borders)
 
 sig = 5
@@ -44,7 +44,7 @@ for bc_id, bc in enumerate(base_clfs):
     axx[2,bc_id].set_xlabel('chunk')
 
     #raw clf res
-    raw_res = mean_raw_clfs_res[[2,5,7],bc_id]
+    raw_res = mean_raw_clfs_res[[2,5,8],bc_id]
     for w_id in range(3):
         ax = axx[w_id, bc_id]
         axx[w_id,0].set_ylabel(wn[w_id])
@@ -73,9 +73,52 @@ for bc_id, bc in enumerate(base_clfs):
 
     fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
 
-# plt.legend()
 plt.tight_layout()
 fig.subplots_adjust(bottom=.17)
 plt.savefig('foo.png')
 plt.savefig('figures/e2.eps')
 plt.savefig('figures/e2.png')
+
+
+plt.clf()
+fig, axx = plt.subplots(3,5,figsize=(10, 5), sharex=True, sharey=True)
+
+
+for bc_id, bc in enumerate(base_clfs):
+    axx[0,bc_id].set_title(base_clfs_names[bc_id])
+    axx[2,bc_id].set_xlabel('chunk')
+
+    #raw clf res
+    raw_res = mean_raw_clfs_res[[2,5,8],bc_id]
+    for w_id in range(3):
+        ax = axx[w_id, bc_id]
+        axx[w_id,0].set_ylabel(wn[w_id])
+
+        a = (raw_res[w_id].reshape(1,chunks-1,1))
+        b = (mean_mean[w_id,bc_id,0,5].reshape(1,chunks-1,1))
+        c = (mean_dsca[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
+        d = (mean_prev[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
+
+    
+        ax.plot(gaussian_filter1d(a[0,:,0], sig), label='base clf', color='black')
+        ax.plot(gaussian_filter1d(b[0,:,0], sig), ls='--', label='MEAN', c='dodgerblue')
+        ax.plot(gaussian_filter1d(d[0,:,0], sig), ls='--', label='PREV', c='orange')
+        ax.plot(gaussian_filter1d(c[0,:,0], sig), ls='--', label='DSCA', c='tomato')
+
+
+        ax.set_ylim(.5,1)
+        ax.set_xlim(0, 500)
+        ax.grid(ls=":")
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        handles, labels = ax.get_legend_handles_labels()
+
+    fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
+
+# plt.legend()
+plt.tight_layout()
+fig.subplots_adjust(bottom=.17)
+plt.savefig('foo.png')
+plt.savefig('figures/e2_bac.eps')
+plt.savefig('figures/e2_bac.png')
+
