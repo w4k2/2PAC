@@ -71,7 +71,7 @@ for bc_id, bc in enumerate(base_clfs):
         ax.spines['right'].set_visible(False)
         handles, labels = ax.get_legend_handles_labels()
 
-    fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
+fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
 
 plt.tight_layout()
 fig.subplots_adjust(bottom=.17)
@@ -99,7 +99,7 @@ for bc_id, bc in enumerate(base_clfs):
         c = (mean_dsca[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
         d = (mean_prev[w_id,bc_id,0,-1].reshape(1, chunks-1, 1))
 
-    
+
         ax.plot(gaussian_filter1d(a[0,:,0], sig), label='base clf', color='black')
         ax.plot(gaussian_filter1d(b[0,:,0], sig), ls='--', label='MEAN', c='dodgerblue')
         ax.plot(gaussian_filter1d(d[0,:,0], sig), ls='--', label='PREV', c='orange')
@@ -113,7 +113,7 @@ for bc_id, bc in enumerate(base_clfs):
         ax.spines['right'].set_visible(False)
         handles, labels = ax.get_legend_handles_labels()
 
-    fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
+fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
 
 # plt.legend()
 plt.tight_layout()
@@ -121,4 +121,3 @@ fig.subplots_adjust(bottom=.17)
 plt.savefig('foo.png')
 plt.savefig('figures/e2_bac.eps')
 plt.savefig('figures/e2_bac.png')
-
