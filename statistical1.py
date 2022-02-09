@@ -260,11 +260,11 @@ for est_id, est_name in enumerate(estimators):
                         (k * lenj) : ((k + 1) * lenj), (j * lenk) : ((j + 1) * lenk)
                     ]
 
-                    im = ax[j, k].imshow(smap.T, cmap="binary_r", aspect="auto", vmin=0, vmax=1)
 
                     # Values
                     smap = np.around(smap, 3)
                     smap[np.isnan(smap)] = 1
+                    im = ax[j, k].imshow(smap.T, cmap="gray", aspect="auto", vmin=0, vmax=1.01)
                     smapunique = np.unique(smap)
                     saddress = np.array(np.meshgrid(*[range(_) for _ in smap.shape]))
 
