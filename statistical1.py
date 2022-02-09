@@ -150,7 +150,7 @@ for est_id, est_name in enumerate(estimators):
                     dependencies = np.array(
                         [
                             [
-                                ttest_ind(cmp_a, f_comb_results[i, j]).pvalue
+                                t_test_corrected(cmp_a, f_comb_results[i, j])[1]
                                 for j, b in enumerate(keys[pair[1]])
                             ]
                             for i, a in enumerate(keys[pair[0]])
@@ -260,10 +260,11 @@ for est_id, est_name in enumerate(estimators):
                         (k * lenj) : ((k + 1) * lenj), (j * lenk) : ((j + 1) * lenk)
                     ]
 
-                    im = ax[j, k].imshow(smap.T, cmap="binary_r", aspect="auto")
+                    im = ax[j, k].imshow(smap.T, cmap="binary_r", aspect="auto", vmin=0, vmax=1)
 
                     # Values
                     smap = np.around(smap, 3)
+                    smap[np.isnan(smap)] = 1
                     smapunique = np.unique(smap)
                     saddress = np.array(np.meshgrid(*[range(_) for _ in smap.shape]))
 
@@ -302,7 +303,7 @@ for est_id, est_name in enumerate(estimators):
                                 a,
                                 b,
                                 "%.3f" % vvvvv,
-                                color="black" if sunique > np.mean(smap) else "white",
+                                color="black" if sunique > .5 else "white",
                                 ha="center",
                                 va="center",
                                 fontsize=9,
