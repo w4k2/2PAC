@@ -45,6 +45,7 @@ for est_id, est_name in enumerate(estimators):
         scores = np.load('results/res_e1_all.npy').squeeze()
         print(scores.shape)
 
+
         # BASE CLFS
         # reps x streams x methods x chunks
         scores_raw_clfs = scores[:,:,:5]
@@ -55,6 +56,15 @@ for est_id, est_name in enumerate(estimators):
         scores_methods = scores[:,:,5:]
         scores_methods = scores_methods.reshape(10,9,5,2,10,3,499)
         print(scores_methods.shape)
+
+        abcd = np.mean(scores_methods, axis=3)
+
+        scores_methods[:,:,:,0,:,:,:] = abcd
+        scores_methods[:,:,:,1,:,:,:] = abcd
+
+        print(abcd)
+
+        #exit()
         print("\n")
 
         # Flatten chunks
@@ -244,8 +254,8 @@ for est_id, est_name in enumerate(estimators):
 
             plt.setp(
                 ax,
-                xticks=range(lenj),
-                xticklabels=keys[pair[0]],
+                xticks=[],
+                xticklabels=[],
                 yticks=range(lenk),
                 yticklabels=keys[pair[1]],
             )
