@@ -37,7 +37,7 @@ mean_dsca = mean_meta_res[[2,5,8],:,:,:,2]
 
 sig = 5
 
-fig, axx = plt.subplots(3,5,figsize=(10, 5), sharex=True, sharey=True)
+fig, axx = plt.subplots(3,5,figsize=(15, 7), sharex=True, sharey=True)
 
 for bc_id, bc in enumerate(base_clfs):
     axx[0,bc_id].set_title(base_clfs_names[bc_id])
@@ -74,7 +74,7 @@ for bc_id, bc in enumerate(base_clfs):
 fig.legend(handles, labels, loc='lower center', ncol=4, frameon=False)
 
 plt.tight_layout()
-fig.subplots_adjust(bottom=.17)
+fig.subplots_adjust(bottom=.12)
 plt.savefig('foo.png')
 plt.savefig('figures/e2.eps')
 plt.savefig('figures/e2.png')

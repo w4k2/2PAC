@@ -47,40 +47,45 @@ for bc_id, bc in enumerate(base_clfs):
     sig = 5
 
     plt.clf()
-    fig, ax = plt.subplots(2,3,figsize=(18,6),sharex=True)
-    fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
+    fig, ax = plt.subplots(2,3,figsize=(15,5), sharex=True)
+    # fig.suptitle("%s" % (base_clfs_names[bc_id]), fontsize=14)
 
     #raw clf res
     raw_res = mean_raw_clfs_res[:,bc_id]
 
     for w_id, w in enumerate(config.str_weights_cdis()):
 
-        ax[0,w_id].set_title(weigths_names[w_id])
+        ax[0,w_id].set_title(weigths_names[3+w_id])
         # ax.set_ylim(.5,1)
         ax[0,w_id].set_ylabel('BAC')
-        ax[0,w_id].set_xlabel('chunk')
+        ax[1,w_id].set_xlabel('chunk')
 
         a = (raw_res[3+w_id].reshape(1,chunks-1,1))
         b1 = (mean_mean[3+w_id,bc_id,0,5].reshape(1,chunks-1,1))
         b2 = (mean_mean[3+w_id,bc_id,0,-1].reshape(1,chunks-1,1))
       
-        ax[0,w_id].plot(a[0,:,0], label='base clf', color='orange')
-        ax[0,w_id].plot(b1[0,:,0], ls='--', label='MEAN 0.3', c='tomato')
-        ax[0,w_id].plot(b2[0,:,0], ls='--', label='MEAN 0.5', c='blue')
+        ax[0,w_id].plot(gaussian_filter1d(a[0,:,0], 2), label=base_clfs_names[bc_id], color='black')
+        ax[0,w_id].plot(gaussian_filter1d(b1[0,:,0], 2), ls='--', label='MEAN 0.3', c='tomato')
+        ax[0,w_id].plot(gaussian_filter1d(b2[0,:,0], 2), ls='--', label='MEAN 0.5', c='blue')
         
-        ax[1,w_id].plot(priors[3+w_id] - errs[3+w_id, bc_id,0,0,0], label='estimation', c='purple')
-        ax[1,w_id].plot(priors[3+w_id], label='actual', c='green')
-        ax[1,w_id].set_ylabel('prior')
+        ax[1,w_id].plot(gaussian_filter1d(priors[3+w_id] - errs[3+w_id, bc_id,0,0,0], 2), label='estimated', c='gray')
+        ax[1,w_id].plot(gaussian_filter1d(priors[3+w_id], 2), label='real', c='black')
+        ax[1,w_id].set_ylabel('prior probability')
+        ax[1,w_id].set_ylim(0,1)
 # 
         ax[0,w_id].set_ylim(0.5,1)
         ax[0,w_id].set_xlim(0, 500)
         ax[0,w_id].grid(ls=":")
+        ax[1,w_id].grid(ls=":")
         ax[0,w_id].spines['top'].set_visible(False)
         ax[0,w_id].spines['right'].set_visible(False)
+        ax[1,w_id].spines['top'].set_visible(False)
+        ax[1,w_id].spines['right'].set_visible(False)
 
-    ax[0,2].legend()
-    ax[1,2].legend()
+    ax[0,0].legend(loc=8, frameon=False)
+    ax[1,0].legend(loc=8, frameon=False)
     plt.tight_layout()
-    fig.subplots_adjust(top=0.90)
+    # fig.subplots_adjust(top=0.90)
     plt.savefig('foo.png')
     plt.savefig('figures/spr_%s.png' % base_clfs_names[bc_id])
+    plt.savefig('figures/spr_%s.eps' % base_clfs_names[bc_id])
