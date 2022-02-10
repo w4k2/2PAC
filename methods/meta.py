@@ -3,11 +3,6 @@ import numpy as np
 from imblearn.over_sampling import SMOTE
 
 """
-criterion:
-'min' - minimalne wsparcie dla lasy wiekszosciowej
-'max' - maksymalne wparcie dla klasy mniejszosciowej
-
-correction - czy uzywac predykcji klasyfikatora bazowego jako bazy
 border - od jakiego poziomu niezbalansowania korekcja predykcji (gdy estymacja a priori dla klasy
         mniejszosciowej jest mniejsza niz border, nastepuje korekcja)
 """
@@ -18,22 +13,11 @@ class Meta(BaseEstimator, ClassifierMixin):
         self.prior_estimator = prior_estimator
         self.criterion=criterion
         self.correction = correction
-        # self.resample=resample
         self.border = border
 
         self.clf = clone(base_clf)
-        # self.smote = SMOTE(random_state=123)
 
     def partial_fit(self, X, y, classes):
-
-        # #SMOTE
-        # if self.resample:
-        #     try:
-        #         X_res, y_res = self.smote.fit_resample(X, y)
-        #         self.clf.partial_fit(X_res, y_res, classes)
-        #     except:
-        #         self.clf.partial_fit(X, y, classes)
-        # else:
 
         self.clf.partial_fit(X, y, classes)
         self.prior_estimator.feed(X, y, classes)
@@ -60,10 +44,6 @@ class Meta(BaseEstimator, ClassifierMixin):
                 max_supp_1 = np.argsort(pred_proba[:,1])[-positive_class_samples:]
                 min_supp_0 = np.argsort(pred_proba[:,0])[:positive_class_samples]
 
-                print(len(max_supp_1), len(min_supp_0))
-                if len(max_supp_1) != len(min_supp_0):
-                    exit()
-
                 if self.criterion == 'min':
                     pred[min_supp_0] = 1
                 elif self.criterion == 'max':
@@ -77,20 +57,11 @@ class Meta(BaseEstimator, ClassifierMixin):
             else:
                 pred = np.ones((X.shape[0]))
 
-            #print('- Estim prior %.5f' % estim_prior)
-
             negative_class_samples = int(np.rint(estim_prior*X.shape[0]))
-            #print('NCS', negative_class_samples)
             if negative_class_samples != 0:
-                # max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
-                # min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
-
+              
                 max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
                 min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
-
-                #print('MINSUP1', len(min_supp_1), 'MAXSUP0', len(max_supp_0))
-                if len(min_supp_1) != len(max_supp_0):
-                    exit()
 
                 if self.criterion == 'min':
                     pred[min_supp_1] = 0
