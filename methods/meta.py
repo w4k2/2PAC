@@ -60,6 +60,10 @@ class Meta(BaseEstimator, ClassifierMixin):
             max_supp_1 = np.argsort(pred_proba[:,1])[-positive_class_samples:]
             min_supp_0 = np.argsort(pred_proba[:,0])[:positive_class_samples]
 
+            print(len(max_supp_1), len(min_supp_0))
+            if len(max_supp_1) != len(min_supp_0):
+                exit()
+
             if self.criterion == 'min':
                 pred[min_supp_0] = 1
             elif self.criterion == 'max':
@@ -73,10 +77,18 @@ class Meta(BaseEstimator, ClassifierMixin):
             else:
                 pred = np.ones((X.shape[0]))
             
-            negative_class_samples = int(np.rint(estim_prior*X.shape[0]))
+            negative_class_samples = np.clip(int(np.rint(estim_prior*X.shape[0])), 0, X.shape[0]-1)
+            print(negative_class_samples)
+
+            # max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
+            # min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
 
             max_supp_0 = np.argsort(pred_proba[:,0])[-negative_class_samples:]
             min_supp_1 = np.argsort(pred_proba[:,1])[:negative_class_samples]
+
+            print(len(min_supp_1), len(max_supp_0))
+            if len(min_supp_1) != len(max_supp_0):
+                exit()
 
             if self.criterion == 'min':
                 pred[min_supp_1] = 0
