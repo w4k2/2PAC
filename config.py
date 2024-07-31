@@ -6,7 +6,7 @@ from sklearn.linear_model import SGDClassifier
 from methods.SEA2 import SEA2
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-from skmultiflow.trees import HoeffdingTreeClassifier
+# from skmultiflow.trees import HoeffdingTreeClassifier
 
 
 def str_static():
