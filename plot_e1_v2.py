@@ -63,7 +63,7 @@ for clf_id in range(5):
         ax[clf_id,i].spines['right'].set_visible(False)
         ax[clf_id,i].grid(ls=':')
         
-        if clf_id==5:
+        if clf_id==4:
             ax[clf_id,i].set_xlabel('threshold')
             
         for prior_id in range(3):
