@@ -39,37 +39,42 @@ mean_meta_res = np.mean(meta_res, axis=-1)
 mean_meta_res = np.mean(mean_meta_res, axis=0)
 # (streams x base_clfs x  thresholds x (mean, prev, dsca))
 
+mean_meta_res = mean_meta_res.reshape(3,3,5,10,3)
+mean_meta_res = np.mean(mean_meta_res, axis=1) # Mean all sis, cdis, ddis
+print(mean_meta_res.shape)
+
+
 aa = np.copy(mean_meta_res[:,:,:,0]) # SWAP MEAN AND PREV
 mean_meta_res[:,:,:,0] = np.copy(mean_meta_res[:,:,:,1])
 mean_meta_res[:,:,:,1] = aa
 
 print(mean_meta_res.shape)
 
-for clf_id in range(5):
-       
-    fig, ax = plt.subplots(3,3,figsize=(10,6), sharex=True)
-    ax = ax.ravel()
-    plt.suptitle('base classifier: %s' % base_clfs_names[clf_id])
+fig, ax = plt.subplots(5,3,figsize=(10,7.5), sharex=True)
 
-    for i in range(9):
-        ax[i].set_title(weigths_names[i])
-        ax[i].spines['top'].set_visible(False)
-        ax[i].spines['right'].set_visible(False)
-        ax[i].grid(ls=':')
+for clf_id in range(5):
+    ax[clf_id, 0].set_ylabel('base: %s \n bac' % base_clfs_names[clf_id])
+
+    for i in range(3):
+        if clf_id==0:
+            ax[clf_id,i].set_title(['Mean SIS', 'Mean CDIS', 'Mean DDIS'][i])
+
+        ax[clf_id,i].spines['top'].set_visible(False)
+        ax[clf_id,i].spines['right'].set_visible(False)
+        ax[clf_id,i].grid(ls=':')
         
-        if i%3==0:
-            ax[i].set_ylabel('balanced accuracy')
-        if i>5:
-            ax[i].set_xlabel('threshold')
+        if clf_id==5:
+            ax[clf_id,i].set_xlabel('threshold')
             
         for prior_id in range(3):
-            ax[i].plot(borders, mean_meta_res[i,clf_id, :, prior_id], label=['PREV', 'MEAN', 'DSCA'][prior_id], color=['r', 'g', 'b'][prior_id])
+            ax[clf_id,i].plot(borders, mean_meta_res[i, clf_id, :, prior_id], label=['PREV', 'MEAN', 'DSCA'][prior_id], color=['r', 'g', 'b'][prior_id])
             
-    ax[0].legend(frameon=False)
-    plt.tight_layout()
-    plt.savefig('foo.png')
-    plt.savefig('figures/e1_v2_%s.png' % base_clfs_names[clf_id])
-    plt.savefig('figures/e1_v2_%s.eps' % base_clfs_names[clf_id])
+ax[0,0].legend(frameon=False)
+plt.tight_layout()
+fig.align_ylabels()
+plt.savefig('foo.png')
+plt.savefig('figures/e1_all.png')
+plt.savefig('figures/e1_all.eps')
 
 
     
